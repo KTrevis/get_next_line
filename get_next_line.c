@@ -6,7 +6,7 @@
 /*   By: ketrevis <ketrevis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 21:49:40 by ketrevis          #+#    #+#             */
-/*   Updated: 2023/10/22 13:54:38 by ketrevis         ###   ########.fr       */
+/*   Updated: 2023/10/22 14:59:32 by ketrevis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*get_curr_line(char **stash, char *buffer)
 	}
 	if ((*stash)[i] == '\n')
 		line[i] = '\n';
-	line[i] = '\0';
+	line[i + 1] = '\0';
 	temp = ft_strdup(&(*stash)[i + 1], ft_strlen(*stash) - i);
 	free(*stash);
 	*stash = temp;
@@ -82,7 +82,7 @@ char	*get_curr_line(char **stash, char *buffer)
 char	*get_next_line(int fd)
 {
 	char	*buffer;
-	int		n;
+	static int		n;
 	static char	*stash;
 
 	n = 1;
@@ -92,12 +92,10 @@ char	*get_next_line(int fd)
 	while (n)
 	{
 		n = read(fd, buffer, BUFFER_SIZE);
-		if (n <= 0)
-			break ;
-		// printf("Buffer\n");
-		// for (int i = 0; i < n; i++)
-		// 	printf("%c", buffer[i]);
-		// printf("\n");
+		if (n == -1)
+			return (NULL);
+		if (n == 0)
+			return (ft_strdup(stash, ft_strlen(stash)));
 		stash = update_stash(stash, buffer, n);
 		if (eol_found(buffer, n))
 			return (get_curr_line(&stash, buffer));
@@ -110,15 +108,22 @@ char	*get_next_line(int fd)
 int	main(void)
 {
 	int fd = open("test.txt", O_RDONLY);
+
 	char *line = get_next_line(fd);
-	printf("%s\n", line);
-	free(line);
+	if (line) {
+		printf("%s", line);
+		free(line);
+	}
+
 	line = get_next_line(fd);
-	printf("%s\n", line);
+	if (line) {
+		printf("%s", line);
+		free(line);
+	}
+
 	line = get_next_line(fd);
-	printf("%s\n", line);
-	free(line);
-	line = get_next_line(fd);
-	printf("%s\n", line);
-	free(line);
+	if (line) {
+		printf("%s", line);
+		free(line);
+	}
 }
