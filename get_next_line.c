@@ -6,7 +6,7 @@
 /*   By: ketrevis <ketrevis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 21:49:40 by ketrevis          #+#    #+#             */
-/*   Updated: 2023/10/22 14:59:32 by ketrevis         ###   ########.fr       */
+/*   Updated: 2023/10/22 15:45:08 by ketrevis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,13 @@ char	*update_stash(char *stash, char *buffer, int n)
 	return (temp);
 }
 
-char	*get_curr_line(char **stash, char *buffer) 
+char	*get_curr_line(char **stash)
 {
 	int		i;
 	char	*line;
 	char	*temp;
 
 	i = 0;
-	free(buffer);
 	while ((*stash)[i] && (*stash)[i] != '\n')
 		i++;
 	if ((*stash)[i] == '\n')
@@ -71,18 +70,20 @@ char	*get_curr_line(char **stash, char *buffer)
 		i++;
 	}
 	if ((*stash)[i] == '\n')
-		line[i] = '\n';
-	line[i + 1] = '\0';
-	temp = ft_strdup(&(*stash)[i + 1], ft_strlen(*stash) - i);
-	free(*stash);
-	*stash = temp;
+	{
+		temp = ft_strdup(&(*stash)[i + 1], ft_strlen(*stash) - i);
+		free(*stash);
+		*stash = temp;
+		line[i++] = '\n';
+	}
+	line[i] = '\0';
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*buffer;
-	static int		n;
+	char		*buffer;
+	int			n;
 	static char	*stash;
 
 	n = 1;
@@ -92,38 +93,16 @@ char	*get_next_line(int fd)
 	while (n)
 	{
 		n = read(fd, buffer, BUFFER_SIZE);
-		if (n == -1)
-			return (NULL);
-		if (n == 0)
-			return (ft_strdup(stash, ft_strlen(stash)));
+		if (n == -1 || n == 0)
+			break ;
 		stash = update_stash(stash, buffer, n);
 		if (eol_found(buffer, n))
-			return (get_curr_line(&stash, buffer));
+			break ;
 		free(buffer);
 		buffer = malloc(BUFFER_SIZE);
 	}
-	return (NULL);
-}
-
-int	main(void)
-{
-	int fd = open("test.txt", O_RDONLY);
-
-	char *line = get_next_line(fd);
-	if (line) {
-		printf("%s", line);
-		free(line);
-	}
-
-	line = get_next_line(fd);
-	if (line) {
-		printf("%s", line);
-		free(line);
-	}
-
-	line = get_next_line(fd);
-	if (line) {
-		printf("%s", line);
-		free(line);
-	}
+	free(buffer);
+	if (n == -1 || !stash)
+		return (NULL);
+	return (get_curr_line(&stash));
 }
