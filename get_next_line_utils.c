@@ -5,16 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ketrevis <ketrevis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/21 21:49:47 by ketrevis          #+#    #+#             */
-/*   Updated: 2023/10/22 15:44:42 by ketrevis         ###   ########.fr       */
+/*   Created: 2023/11/01 17:22:39 by ketrevis          #+#    #+#             */
+/*   Updated: 2023/11/01 18:05:16 by ketrevis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+int	ft_strlen(char *str)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -22,47 +22,46 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strdup(char *str, int len)
 {
-	size_t	size;
-	char	*str;
 	int		i;
+	char	*dest;
 
-	size = ft_strlen(s1) + ft_strlen(s2) + 1;
 	i = 0;
-	str = malloc(size * sizeof(char));
-	if (!str)
-		return (NULL);
-	while (*s1)
+	dest = malloc((len + 1) * sizeof(char));
+	while (i < len)
 	{
-		str[i] = *s1;
-		s1++;
+		dest[i] = str[i];
 		i++;
 	}
-	while (*s2)
-	{
-		str[i] = *s2;
-		s2++;
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
+	dest[i] = '\0';
+	return (dest);
 }
 
-char	*ft_strdup(const char *str, int n)
+char	*ft_strjoin(char *file, char *buffer, int buffer_len)
 {
-	char	*dup;
 	int		i;
-
+	int		j;
+	char	*str;
+	
+	if (!file)
+		return (ft_strdup(buffer, buffer_len));
 	i = 0;
-	dup = malloc((n + 1) * sizeof(char));
-	if (!dup)
-		return (NULL);
-	while (i < n)
+	j = 0;
+	str = malloc((buffer_len + ft_strlen(file) + 1) * sizeof(char));
+	while (file[i])
 	{
-		dup[i] = str[i];
+		str[i] = file[i];
 		i++;
 	}
-	dup[i] = '\0';
-	return (dup);
+	while (j < buffer_len)
+	{
+		str[i] = buffer[j];
+		i++;
+		j++;
+	}
+	str[i] = '\0';
+	if (file)
+		free(file);
+	return (str);
 }
