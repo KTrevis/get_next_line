@@ -6,7 +6,7 @@
 /*   By: ketrevis <ketrevis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:24:23 by ketrevis          #+#    #+#             */
-/*   Updated: 2023/11/02 17:26:15 by ketrevis         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:32:56 by ketrevis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ char	*get_curr_line(char **src)
 		i++;
 	if (file[i] == '\n')
 		i++;
+	if (i == 0)
+		return (NULL);
 	str = malloc((i + 1) * sizeof(char));
 	if (!str)
 		return (str);
