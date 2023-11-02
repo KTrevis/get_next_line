@@ -6,7 +6,7 @@
 /*   By: ketrevis <ketrevis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:24:23 by ketrevis          #+#    #+#             */
-/*   Updated: 2023/11/02 17:43:52 by ketrevis         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:59:51 by ketrevis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,16 @@ char	*get_curr_line(char **src)
 		i++;
 	}
 	line[i] = '\0';
-	if (file[i] != '\0')
-	{
-		*src = ft_strdup(&file[i], ft_strlen(file) - i);
-		free(file);
-	}
+	*src = ft_strdup(&file[i], ft_strlen(file) - i);
+	free(file);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	char				*buffer;
+	char		*buffer;
 	static char	*file;
-	int					n;
+	int			n;
 
 	n = 1;
 	if (fd < 0)
@@ -83,30 +80,31 @@ char	*get_next_line(int fd)
 		if (!buffer)
 			return (buffer);
 		n = read(fd, buffer, BUFFER_SIZE);
+		if (n == 0 || n == -1)
+		{
+			free(buffer);
+			return (NULL);
+		}
 		file = ft_strjoin(file, buffer, n);
 		free(buffer);
-		if (n == 0)
-			return (NULL);
 		if (eol_found(file) || n < BUFFER_SIZE)
 			return (get_curr_line(&file));
 	}
 	return (NULL);
 }
 
-int	main(int ac, char **av) {
-	(void)ac;
-	int fd = open(av[1], O_RDONLY);
-	char	*line;
-
-	line = get_next_line(fd);
-	printf("%s", line);
-	free(line);
-
-	line = get_next_line(fd);
-	printf("%s", line);
-	free(line);
-
-	line = get_next_line(fd);
-	printf("%s", line);
-	free(line);
-}
+// int	main(int ac, char **av) {
+// 	(void)ac;
+// 	int fd = open(av[1], O_RDONLY);
+// 	char	*line;
+//
+// 	line = get_next_line(fd);
+// 	while (line)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	printf("%s", line);
+// 	free(line);
+// }

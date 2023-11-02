@@ -6,7 +6,7 @@
 /*   By: ketrevis <ketrevis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:08:14 by ketrevis          #+#    #+#             */
-/*   Updated: 2023/11/02 17:09:00 by ketrevis         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:52:22 by ketrevis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@
 char	*ft_strjoin(char *file, char *buffer, int buffer_len);
 char	*ft_strdup(char *src, int len);
 int		ft_strlen(char *str);
+char	*get_next_line(int fd);
 
 #endif
