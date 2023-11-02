@@ -6,7 +6,7 @@
 /*   By: ketrevis <ketrevis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:24:23 by ketrevis          #+#    #+#             */
-/*   Updated: 2023/11/02 17:42:40 by ketrevis         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:43:52 by ketrevis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ char	*get_next_line(int fd)
 		n = read(fd, buffer, BUFFER_SIZE);
 		file = ft_strjoin(file, buffer, n);
 		free(buffer);
+		if (n == 0)
+			return (NULL);
 		if (eol_found(file) || n < BUFFER_SIZE)
 			return (get_curr_line(&file));
 	}
