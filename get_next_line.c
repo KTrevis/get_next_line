@@ -6,7 +6,7 @@
 /*   By: ketrevis <ketrevis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:24:23 by ketrevis          #+#    #+#             */
-/*   Updated: 2023/11/02 17:59:51 by ketrevis         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:07:24 by ketrevis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,3 @@ char	*get_next_line(int fd)
 	}
 	return (NULL);
 }
-
-// int	main(int ac, char **av) {
-// 	(void)ac;
-// 	int fd = open(av[1], O_RDONLY);
-// 	char	*line;
-//
-// 	line = get_next_line(fd);
-// 	while (line)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	printf("%s", line);
-// 	free(line);
-// }
