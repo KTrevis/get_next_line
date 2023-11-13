@@ -6,7 +6,7 @@
 /*   By: ketrevis <ketrevis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:24:23 by ketrevis          #+#    #+#             */
-/*   Updated: 2023/11/02 18:07:56 by ketrevis         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:17:26 by ketrevis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*get_next_line(int fd)
 		if (!buffer)
 			return (buffer);
 		n = read(fd, buffer, BUFFER_SIZE);
-		if (n == 0 || n == -1)
+		if (n == -1)
 		{
 			free(buffer);
 			return (NULL);
